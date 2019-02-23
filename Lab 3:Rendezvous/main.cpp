@@ -3,6 +3,9 @@
 #include <thread>
 #include <chrono>
 
+
+/*Ailish Kavanagh, C00206130*/
+
 /*! \class Signal
     \brief An Implementation of a Rendezvous using Semaphores
 
@@ -10,17 +13,31 @@
 
 */
 /*! displays a message that is split in to 2 sections to show how a rendezvous works*/
+/*
+*Task 1: runs untill rendezvous point;
+*send a signal to the firstSem semaphore to unlock it so it may continue to run
+*Then must wait for a call signal from secondSem semaphore before being able to continue running
+*/
 void taskOne(std::shared_ptr<Semaphore> firstSem,std::shared_ptr<Semaphore>  secondSem, int delay){
   std::this_thread::sleep_for(std::chrono::seconds(delay));
   std::cout <<"Task One has arrived! "<< std::endl;
   //THIS IS THE RENDEZVOUS POINT!
+  firstSem -> Signal();
+  secondSem -> Wait();
   std::cout << "Task One has left!"<<std::endl;
 }
 /*! displays a message that is split in to 2 sections to show how a rendezvous works*/
+/*
+*Task 2: runs until rendezvous point;
+*send a signal call to the secondSem semaphore to unlock it
+*Then must wait for a signal call from the firstSem semaphore before being able to continue running
+*/
 void taskTwo(std::shared_ptr<Semaphore> firstSem, std::shared_ptr<Semaphore> secondSem, int delay){
   std::this_thread::sleep_for(std::chrono::seconds(delay));
   std::cout <<"Task Two has arrived "<<std::endl;
   //THIS IS THE RENDEZVOUS POINT!
+  secondSem -> Signal();
+  firstSem -> Wait();
   std::cout << "Task Two has left "<<std::endl;
 }
 
