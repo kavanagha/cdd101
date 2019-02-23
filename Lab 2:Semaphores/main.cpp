@@ -9,15 +9,23 @@
 
 */
 /*! displays a message first*/
+/*Set a Signal() at the end of task 1
+ * Once Task 1 completes it will signal to take 2 to start*/
 void taskOne(std::shared_ptr<Semaphore> theSemaphore, int delay){
   sleep(delay);
   std::cout <<"I ";
   std::cout << "must ";
   std::cout << "print ";
   std::cout << "first"<<std::endl;
+  theSemaphore->Signal();
 }
 /*! displays a message second*/
+/*Set a Wait() at the beginning of Task 2
+ *Once Task 1 has completed, Signal() i scalled
+ *Task 2 cannnot run until it Taks 1 has ended
+ *i.e it is forced to wait*/
 void taskTwo(std::shared_ptr<Semaphore> theSemaphore){
+  theSemaphore -> Wait();
   std::cout <<"This ";
   std::cout << "will ";
   std::cout << "appear ";
