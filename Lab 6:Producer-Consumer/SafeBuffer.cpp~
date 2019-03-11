@@ -1,0 +1,20 @@
+#include "SafeBuffer.h"
+#include <iostream>
+#include <stdlib.h>
+
+SafeBuffer::SafeBuffer(){
+  theMutex = std::make_shared<Semaphore>(1);
+}
+
+int SafeBuffer::push(Event newChar){
+    theMutex->Wait();
+    theData.push_back(newChar);
+    theMutex->Signal();
+}
+
+Event SafeBuffer::pop(){
+    theMutex->Wait();
+    Event e = theData.back();
+    theData.pop_back();
+    theMutex->Signal();
+}

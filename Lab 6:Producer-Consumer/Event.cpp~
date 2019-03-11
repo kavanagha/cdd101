@@ -1,0 +1,15 @@
+#include "Event.h"
+#include <iostream>
+#include <stdlib.h>
+
+Event::Event(){
+    a = 'a'+rand()%26
+    std::cout << a;
+}
+
+bool Event::consume(){
+    char b = a-32;    
+    std::cout << b;
+}
+
+
