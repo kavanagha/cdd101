@@ -1,3 +1,11 @@
+// main.cpp --- 
+// 
+// Filename: main.cpp
+// Description: Run the main program for the Reusable Barriers labs
+// Author: Ailish Kavanagh, C00206130
+// 
+// 
+
 #include "Barrier.h"
 #include <iostream>
 #include <thread>
@@ -18,9 +26,10 @@ void barrierTask(std::shared_ptr<Barrier> theBarrier, int numLoops){
     //Do first bit of task
     std::cout << "A"<< i;
     //Barrier
-    theBarrier.wait();
+    theBarrier->phase_one();
     //Do second half of task
     std::cout<< "B" << i;
+    theBarrier->phase_two();
   }
   
 
@@ -33,12 +42,12 @@ int main(void){
   /**< Launch the threads  */
   int i=0;
   for(std::thread& t: vt){
-    t=std::thread(updateTask,aBarrier,10);
+    t=std::thread(barrierTask,aBarrier,10);
   }
   /**< Join the threads with the main thread */
   for (auto& v :vt){
       v.join();
   }
-  std::cout << sharedVariable << std::endl;
+  //std::cout << sharedVariable << std::endl;
   return 0;
 }
